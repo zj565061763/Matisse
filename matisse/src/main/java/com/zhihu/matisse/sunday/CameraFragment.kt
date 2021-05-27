@@ -6,14 +6,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.util.Log
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.zhihu.matisse.internal.entity.CaptureStrategy
 import com.zhihu.matisse.internal.utils.MediaStoreCompat
 import com.zhihu.matisse.internal.utils.SingleMediaScanner
 import com.zhihu.matisse.sunday.callback.OnResultCallback
 
-class CameraFragment : Fragment() {
+class CameraFragment : OnActivityResultFragment() {
     private val REQUEST_CODE_CAMERA = 413
     private lateinit var _mediaStore: MediaStoreCompat
     private var _callback: OnResultCallback? = null
@@ -30,38 +29,30 @@ class CameraFragment : Fragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_CAMERA) {
-            val fragmentActivity = requireActivity()
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    val fileUri: Uri = _mediaStore.currentPhotoUri
-                    val filePath: String = _mediaStore.currentPhotoPath
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                        fragmentActivity.revokeUriPermission(
-                            fileUri,
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        )
-                    }
-                    SingleMediaScanner(fragmentActivity.applicationContext, filePath) {
-                        Log.i(CameraFragment::class.java.simpleName, "scan finish!")
-                    }
+    override fun getRequestCode(): Int {
+        return REQUEST_CODE_CAMERA
+    }
 
-                    Log.i(CameraFragment::class.java.simpleName, "RESULT_OK ${fileUri} ${this}")
-                    _callback?.onResult(listOf(fileUri))
-                }
-                Activity.RESULT_CANCELED -> {
-                    Log.i(CameraFragment::class.java.simpleName, "RESULT_CANCELED ${this}")
-                    _callback?.onCancel()
-                }
-            }
-
-            fragmentActivity.supportFragmentManager
-                .beginTransaction()
-                .remove(this)
-                .commitNowAllowingStateLoss()
+    override fun onResult(data: Intent?, fragmentActivity: FragmentActivity) {
+        val fileUri: Uri = _mediaStore.currentPhotoUri
+        val filePath: String = _mediaStore.currentPhotoPath
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            fragmentActivity.revokeUriPermission(
+                fileUri,
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
         }
+        SingleMediaScanner(fragmentActivity.applicationContext, filePath) {
+            Log.i(CameraFragment::class.java.simpleName, "scan finish!")
+        }
+
+        Log.i(CameraFragment::class.java.simpleName, "onResult ${fileUri} ${this}")
+        _callback?.onResult(listOf(fileUri))
+    }
+
+    override fun onCancel() {
+        Log.i(CameraFragment::class.java.simpleName, "onCancel ${this}")
+        _callback?.onCancel()
     }
 
     override fun onDestroy() {
