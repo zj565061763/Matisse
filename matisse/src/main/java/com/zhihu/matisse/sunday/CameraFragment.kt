@@ -11,12 +11,12 @@ import androidx.fragment.app.FragmentActivity
 import com.zhihu.matisse.internal.entity.CaptureStrategy
 import com.zhihu.matisse.internal.utils.MediaStoreCompat
 import com.zhihu.matisse.internal.utils.SingleMediaScanner
-import com.zhihu.matisse.sunday.callback.CameraResultCallback
+import com.zhihu.matisse.sunday.callback.OnResultCallback
 
 class CameraFragment : Fragment() {
     private val REQUEST_CODE_CAMERA = 413
     private lateinit var _mediaStore: MediaStoreCompat
-    private var _callback: CameraResultCallback? = null
+    private var _callback: OnResultCallback? = null
     private var _captureStrategy: CaptureStrategy? = null
 
     override fun onAttach(context: Context) {
@@ -49,7 +49,7 @@ class CameraFragment : Fragment() {
                     }
 
                     Log.i(CameraFragment::class.java.simpleName, "RESULT_OK ${fileUri} ${this}")
-                    _callback?.onResult(fileUri)
+                    _callback?.onResult(listOf(fileUri))
                 }
                 Activity.RESULT_CANCELED -> {
                     Log.i(CameraFragment::class.java.simpleName, "RESULT_CANCELED ${this}")
@@ -72,9 +72,9 @@ class CameraFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        internal fun attach(captureStrategy: CaptureStrategy, activity: FragmentActivity, callback: CameraResultCallback) {
+        internal fun attach(captureStrategy: CaptureStrategy, activity: FragmentActivity, callback: OnResultCallback) {
             if (activity.isFinishing) {
-                callback.onResult(null)
+                callback.onResult(listOf())
                 return
             }
 
