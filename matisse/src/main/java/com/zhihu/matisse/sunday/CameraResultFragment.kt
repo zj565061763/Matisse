@@ -63,7 +63,7 @@ class CameraResultFragment : OnActivityResultFragment() {
 
     companion object {
         @JvmStatic
-        internal fun attach(captureStrategy: CaptureStrategy, activity: FragmentActivity, callback: OnResultCallback) {
+        fun attach(captureStrategy: CaptureStrategy, activity: FragmentActivity, callback: OnResultCallback) {
             if (activity.isFinishing) {
                 callback.onResult(listOf())
                 return
