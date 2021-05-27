@@ -40,6 +40,7 @@ import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.sunday.CameraResultFragment;
+import com.zhihu.matisse.sunday.callback.OnCaptureClickCallback;
 import com.zhihu.matisse.sunday.callback.OnResultCallback;
 
 import org.jetbrains.annotations.NotNull;
@@ -109,6 +110,13 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                         .autoHideToolbarOnSingleTap(true)
                         .setOnCheckedListener(isChecked -> {
                             Log.e("isChecked", "onCheck: isChecked=" + isChecked);
+                        })
+                        .setOnCaptureClickCallback(new OnCaptureClickCallback() {
+                            @Override
+                            public void onCaptureClick(@NotNull Runnable task) {
+                                task.run();
+                                Log.i("OnCaptureClickCallback", "onCaptureClick");
+                            }
                         })
                         .forResult(new OnResultCallback() {
                             @Override
