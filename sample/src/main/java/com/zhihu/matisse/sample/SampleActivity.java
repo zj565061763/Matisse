@@ -40,9 +40,9 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
-import com.zhihu.matisse.sunday.CameraResultFragment;
 import com.zhihu.matisse.sunday.callback.OnCaptureClickCallback;
 import com.zhihu.matisse.sunday.callback.OnResultCallback;
+import com.zhihu.matisse.sunday.fragment.CameraResultFragment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -160,7 +160,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.only_camera:
                 final CaptureStrategy captureStrategy = new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test");
-                CameraResultFragment.attach(captureStrategy, this, new OnResultCallback() {
+                CameraResultFragment.start(this, captureStrategy, new OnResultCallback() {
                     @Override
                     public void onResult(@NonNull List<Uri> list) {
                         Log.i("OnResultCallback", "onResult:" + Arrays.toString(list.toArray()));
