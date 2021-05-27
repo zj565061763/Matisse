@@ -1,24 +1,15 @@
 package com.zhihu.matisse.sunday
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 
 abstract class OnActivityResultFragment : Fragment() {
-    private var _requestCode: Int? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (_requestCode == null) {
-            _requestCode = getRequestCode()
-        }
-    }
 
     final override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == _requestCode!!) {
+        if (requestCode == getRequestCode()) {
             val fragmentActivity = requireActivity()
             when (resultCode) {
                 Activity.RESULT_OK -> {
@@ -34,6 +25,14 @@ abstract class OnActivityResultFragment : Fragment() {
                 .remove(this)
                 .commitNowAllowingStateLoss()
         }
+    }
+
+    fun attachTo(activity: FragmentActivity) {
+        if (isAdded) return
+        activity.supportFragmentManager
+            .beginTransaction()
+            .add(this, null)
+            .commitNowAllowingStateLoss()
     }
 
     protected abstract fun getRequestCode(): Int

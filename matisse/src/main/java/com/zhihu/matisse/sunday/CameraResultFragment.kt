@@ -12,7 +12,7 @@ import com.zhihu.matisse.internal.utils.MediaStoreCompat
 import com.zhihu.matisse.internal.utils.SingleMediaScanner
 import com.zhihu.matisse.sunday.callback.OnResultCallback
 
-class CameraFragment : OnActivityResultFragment() {
+class CameraResultFragment : OnActivityResultFragment() {
     private val REQUEST_CODE_CAMERA = 413
     private lateinit var _mediaStore: MediaStoreCompat
     private var _callback: OnResultCallback? = null
@@ -20,7 +20,7 @@ class CameraFragment : OnActivityResultFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Log.i(CameraFragment::class.java.simpleName, "onAttach callback:${_callback} ${this}")
+        Log.i(CameraResultFragment::class.java.simpleName, "onAttach callback:${_callback} ${this}")
         if (!this::_mediaStore.isInitialized) {
             _mediaStore = MediaStoreCompat(context as Activity, this).also {
                 it.setCaptureStrategy(_captureStrategy!!)
@@ -43,21 +43,21 @@ class CameraFragment : OnActivityResultFragment() {
             )
         }
         SingleMediaScanner(fragmentActivity.applicationContext, filePath) {
-            Log.i(CameraFragment::class.java.simpleName, "scan finish!")
+            Log.i(CameraResultFragment::class.java.simpleName, "scan finish!")
         }
 
-        Log.i(CameraFragment::class.java.simpleName, "onResult ${fileUri} ${this}")
+        Log.i(CameraResultFragment::class.java.simpleName, "onResult ${fileUri} ${this}")
         _callback?.onResult(listOf(fileUri))
     }
 
     override fun onCancel() {
-        Log.i(CameraFragment::class.java.simpleName, "onCancel ${this}")
+        Log.i(CameraResultFragment::class.java.simpleName, "onCancel ${this}")
         _callback?.onCancel()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.i(CameraFragment::class.java.simpleName, "onDestroy ${this}")
+        Log.i(CameraResultFragment::class.java.simpleName, "onDestroy ${this}")
         _callback = null
     }
 
@@ -69,15 +69,11 @@ class CameraFragment : OnActivityResultFragment() {
                 return
             }
 
-            val fragment = CameraFragment().apply {
+            val fragment = CameraResultFragment().apply {
                 this._captureStrategy = captureStrategy
                 this._callback = callback
             }
-
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(fragment, null)
-                .commitNowAllowingStateLoss()
+            fragment.attachTo(activity)
         }
     }
 }
