@@ -169,6 +169,9 @@ public class MatisseActivity extends AppCompatActivity implements
         mAlbumCollection.onDestroy();
         mSpec.onCheckedListener = null;
         mSpec.onSelectedListener = null;
+
+        // modify
+        mSpec.onCaptureClickCallback = null;
     }
 
     @Override
@@ -429,8 +432,20 @@ public class MatisseActivity extends AppCompatActivity implements
 
     @Override
     public void capture() {
-        if (mMediaStoreCompat != null) {
-            mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE);
+        // modify
+        final Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                if (mMediaStoreCompat != null) {
+                    mMediaStoreCompat.dispatchCaptureIntent(MatisseActivity.this, REQUEST_CODE_CAPTURE);
+                }
+            }
+        };
+
+        if (mSpec.onCaptureClickCallback != null) {
+            mSpec.onCaptureClickCallback.onCaptureClick(task);
+        } else {
+            task.run();
         }
     }
 

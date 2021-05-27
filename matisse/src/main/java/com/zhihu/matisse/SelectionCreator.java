@@ -34,6 +34,7 @@ import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
 import com.zhihu.matisse.sunday.ResultFragment;
+import com.zhihu.matisse.sunday.callback.OnCaptureClickCallback;
 import com.zhihu.matisse.sunday.callback.OnResultCallback;
 import com.zhihu.matisse.ui.MatisseActivity;
 
@@ -372,7 +373,17 @@ public final class SelectionCreator {
         return this;
     }
 
-    public void forResult(OnResultCallback onResultCallback) {
+    // modify
+    public SelectionCreator setOnCaptureClickCallback(@Nullable OnCaptureClickCallback callback) {
+        mSelectionSpec.onCaptureClickCallback = callback;
+        return this;
+    }
+
+    // modify
+    public void forResult(@NonNull OnResultCallback onResultCallback) {
+        if (onResultCallback == null){
+            throw new NullPointerException("");
+        }
         Activity activity = mMatisse.getActivity();
         if (activity == null) {
             throw new RuntimeException("Activity was not specified");

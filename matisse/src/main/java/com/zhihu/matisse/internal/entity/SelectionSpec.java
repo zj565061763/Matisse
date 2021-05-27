@@ -27,6 +27,7 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
+import com.zhihu.matisse.sunday.callback.OnCaptureClickCallback;
 
 import java.util.List;
 import java.util.Set;
@@ -57,6 +58,9 @@ public final class SelectionSpec {
     public int originalMaxSize;
     public OnCheckedListener onCheckedListener;
     public boolean showPreview;
+
+    // modify
+    public OnCaptureClickCallback onCaptureClickCallback;
 
     private SelectionSpec() {
     }
