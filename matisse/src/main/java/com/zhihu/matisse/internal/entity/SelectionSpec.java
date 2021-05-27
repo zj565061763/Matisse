@@ -61,6 +61,8 @@ public final class SelectionSpec {
 
     // modify
     public OnCaptureClickCallback onCaptureClickCallback;
+    // modify
+    public boolean captureDirectly;
 
     private SelectionSpec() {
     }

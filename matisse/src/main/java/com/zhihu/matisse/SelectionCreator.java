@@ -381,6 +381,12 @@ public final class SelectionCreator {
     }
 
     // modify
+    public SelectionCreator setCaptureDirectly(boolean captureDirectly) {
+        mSelectionSpec.captureDirectly = captureDirectly;
+        return this;
+    }
+
+    // modify
     public void forResult(@NonNull OnResultCallback onResultCallback) {
         if (onResultCallback == null) {
             throw new NullPointerException("");
