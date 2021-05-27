@@ -38,7 +38,7 @@ public class ResultFragment extends OnActivityResultFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         Log.i(ResultFragment.class.getSimpleName(), "onAttach callback:" + mOnResultCallback + " " + this);
-        final Intent intent = new Intent(getActivity(), MatisseActivity.class);
+        final Intent intent = new Intent(context, MatisseActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
     }
 
