@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,8 +43,6 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.sunday.CameraResultFragment;
 import com.zhihu.matisse.sunday.callback.OnCaptureClickCallback;
 import com.zhihu.matisse.sunday.callback.OnResultCallback;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -113,14 +112,14 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                         })
                         .setOnCaptureClickCallback(new OnCaptureClickCallback() {
                             @Override
-                            public void onCaptureClick(@NotNull Runnable task) {
+                            public void onCaptureClick(@NonNull Runnable task) {
                                 task.run();
                                 Log.i("OnCaptureClickCallback", "onCaptureClick");
                             }
                         })
                         .forResult(new OnResultCallback() {
                             @Override
-                            public void onResult(@NotNull List<? extends Uri> list) {
+                            public void onResult(@NonNull List<Uri> list) {
                                 Log.i("OnResultCallback", "onResult:" + Arrays.toString(list.toArray()));
                             }
 
@@ -163,7 +162,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 final CaptureStrategy captureStrategy = new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test");
                 CameraResultFragment.attach(captureStrategy, this, new OnResultCallback() {
                     @Override
-                    public void onResult(@NotNull List<? extends Uri> list) {
+                    public void onResult(@NonNull List<Uri> list) {
                         Log.i("OnResultCallback", "onResult:" + Arrays.toString(list.toArray()));
                     }
 
