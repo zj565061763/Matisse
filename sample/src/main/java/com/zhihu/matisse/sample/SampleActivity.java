@@ -39,7 +39,11 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.sunday.callback.OnResultCallback;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class SampleActivity extends AppCompatActivity implements View.OnClickListener {
@@ -104,7 +108,17 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                         .setOnCheckedListener(isChecked -> {
                             Log.e("isChecked", "onCheck: isChecked=" + isChecked);
                         })
-                        .forResult(REQUEST_CODE_CHOOSE);
+                        .forResult(new OnResultCallback() {
+                            @Override
+                            public void onResult(@NotNull List<? extends Uri> list) {
+                                Log.i("OnResultCallback", "onResult:" + Arrays.toString(list.toArray()));
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                Log.i("OnResultCallback", "onCancel");
+                            }
+                        });
                 break;
             case R.id.dracula:
                 Matisse.from(SampleActivity.this)
