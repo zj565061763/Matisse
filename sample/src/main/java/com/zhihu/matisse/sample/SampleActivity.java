@@ -39,6 +39,7 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.sunday.CameraResultFragment;
 import com.zhihu.matisse.sunday.callback.OnResultCallback;
 
 import org.jetbrains.annotations.NotNull;
@@ -59,6 +60,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.zhihu).setOnClickListener(this);
         findViewById(R.id.dracula).setOnClickListener(this);
         findViewById(R.id.only_gif).setOnClickListener(this);
+        findViewById(R.id.only_camera).setOnClickListener(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -148,6 +150,20 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                         .maxOriginalSize(10)
                         .autoHideToolbarOnSingleTap(true)
                         .forResult(REQUEST_CODE_CHOOSE);
+                break;
+            case R.id.only_camera:
+                final CaptureStrategy captureStrategy = new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test");
+                CameraResultFragment.attach(captureStrategy, this, new OnResultCallback() {
+                    @Override
+                    public void onResult(@NotNull List<? extends Uri> list) {
+                        Log.i("OnResultCallback", "onResult:" + Arrays.toString(list.toArray()));
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Log.i("OnResultCallback", "onCancel");
+                    }
+                });
                 break;
             default:
                 break;
