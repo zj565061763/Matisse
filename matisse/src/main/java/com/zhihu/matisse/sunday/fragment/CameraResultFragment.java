@@ -55,9 +55,11 @@ public class CameraResultFragment extends OnActivityResultFragment {
     protected void onResult(@Nullable Intent data, @NonNull FragmentActivity fragmentActivity) {
         final Uri fileUri = mMediaStoreCompat.getCurrentPhotoUri();
         final String filePath = mMediaStoreCompat.getCurrentPhotoPath();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             fragmentActivity.revokeUriPermission(fileUri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
 
         new SingleMediaScanner(fragmentActivity.getApplicationContext(), filePath, new SingleMediaScanner.ScanListener() {
             @Override
