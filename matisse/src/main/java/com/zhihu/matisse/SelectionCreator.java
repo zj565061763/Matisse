@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
@@ -32,6 +33,8 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
+import com.zhihu.matisse.sunday.ResultFragment;
+import com.zhihu.matisse.sunday.callback.OnResultCallback;
 import com.zhihu.matisse.ui.MatisseActivity;
 
 import java.lang.annotation.Retention;
@@ -367,5 +370,18 @@ public final class SelectionCreator {
     public SelectionCreator showPreview(boolean showPreview) {
         mSelectionSpec.showPreview = showPreview;
         return this;
+    }
+
+    public void forResult(OnResultCallback onResultCallback) {
+        Activity activity = mMatisse.getActivity();
+        if (activity == null) {
+            throw new RuntimeException("Activity was not specified");
+        }
+        if (!(activity instanceof FragmentActivity)) {
+            throw new RuntimeException("Activity should be instance of " + FragmentActivity.class.getSimpleName());
+        }
+
+        final FragmentActivity fragmentActivity = (FragmentActivity) activity;
+        ResultFragment.attach$com_sd_lib_android_Matisse(fragmentActivity, onResultCallback);
     }
 }
