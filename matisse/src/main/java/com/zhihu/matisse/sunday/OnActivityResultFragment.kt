@@ -18,6 +18,9 @@ abstract class OnActivityResultFragment : Fragment() {
                 Activity.RESULT_CANCELED -> {
                     onCancel()
                 }
+                else -> {
+                    onResult(null, fragmentActivity)
+                }
             }
 
             fragmentActivity.supportFragmentManager
