@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SampleActivity extends AppCompatActivity implements View.OnClickListener {
-
+    private static final String TAG = SampleActivity.class.getSimpleName();
     private static final int REQUEST_CODE_CHOOSE = 23;
 
     private UriAdapter mAdapter;
@@ -114,18 +114,18 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                             @Override
                             public void onCaptureClick(@NonNull Runnable task) {
                                 task.run();
-                                Log.i("OnCaptureClickCallback", "onCaptureClick");
+                                Log.i(TAG, "onCaptureClick");
                             }
                         })
                         .forResult(new OnResultCallback() {
                             @Override
                             public void onResult(@NonNull List<Uri> list) {
-                                Log.i("OnResultCallback", "onResult:" + Arrays.toString(list.toArray()));
+                                Log.i(TAG, "forResult onResult:" + Arrays.toString(list.toArray()));
                             }
 
                             @Override
                             public void onCancel() {
-                                Log.i("OnResultCallback", "onCancel");
+                                Log.i(TAG, "forResult onCancel");
                             }
                         });
                 break;
@@ -163,12 +163,12 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 CameraResultFragment.start(this, captureStrategy, new OnResultCallback() {
                     @Override
                     public void onResult(@NonNull List<Uri> list) {
-                        Log.i("OnResultCallback", "onResult:" + Arrays.toString(list.toArray()));
+                        Log.i(TAG, "onlyCamera onResult:" + Arrays.toString(list.toArray()));
                     }
 
                     @Override
                     public void onCancel() {
-                        Log.i("OnResultCallback", "onCancel");
+                        Log.i(TAG, "onlyCamera onCancel");
                     }
                 });
                 break;
